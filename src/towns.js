@@ -54,7 +54,7 @@ function loadTowns() {
    isMatching('Moscow', 'Moscov') // false
  */
 function isMatching(full, chunk) {
-    if(full.toLowerCase().indexOf(chunk.toLowerCase()) !== -1) {
+    if (full.toLowerCase().indexOf(chunk.toLowerCase()) !== -1) {
         return true;
     } else {
         return false;
@@ -72,6 +72,21 @@ const filterResult = homeworkContainer.querySelector('#filter-result');
 
 filterInput.addEventListener('keyup', function() {
     // это обработчик нажатия кливиш в текстовом поле
+    loadTowns().then(arrTown => {
+        filterResult.innerHTML = '';
+        for (let i = 0; i < arrTown.length; i++) {
+            
+            if (isMatching(arrTown[i].name, filterInput.value)) {
+                let div = document.createElement('div');
+
+                div.textContent = arrTown[i].name;
+                filterResult.appendChild(div);
+            }
+        }
+        if (!filterInput.value) {
+            filterResult.innerHTML = '';
+        }
+    });
 });
 
 export {
