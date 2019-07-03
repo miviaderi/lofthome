@@ -1,25 +1,21 @@
 let webpack = require('webpack');
 let HtmlPlugin = require('html-webpack-plugin');
 let CleanWebpackPlugin = require('clean-webpack-plugin');
-let ExtractTextPlugin = require('extract-text-webpack-plugin');
-let rules = require('./webpack.config.rules')();
+let ExtractTextPlugin = require('mini-css-extract-plugin');
+let rules = require('./webpack.config.rules');
 let path = require('path');
 
 rules.push({
     test: /\.css$/,
-    use: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: 'css-loader'
-    })
+    use: ExtractTextPlugin.loader
 });
 
 module.exports = {
     entry: {
-        main: './src/index.js',
-        dnd: './src/dnd.js'
+        cookie: './src/cookie.js'
     },
     devServer: {
-        index: 'dnd.html'
+        index: './src/cookie.html'
     },
     output: {
         filename: '[name].[hash].js',
@@ -28,24 +24,12 @@ module.exports = {
     devtool: 'source-map',
     module: { rules },
     plugins: [
-        new webpack.optimize.UglifyJsPlugin({
-            sourceMap: true,
-            compress: {
-                drop_debugger: false,
-                warnings: false
-            }
-        }),
         new ExtractTextPlugin('styles.css'),
         new HtmlPlugin({
-            title: 'Main Homework',
-            template: 'main.hbs',
-            chunks: ['main']
-        }),
-        new HtmlPlugin({
-            title: 'Div Drag And Drop',
-            template: 'dnd.hbs',
-            filename: 'dnd.html',
-            chunks: ['dnd']
+            title: 'Cookies',
+            template: './src/cookie.hbs',
+            filename: './src/cookie.html',
+            chunks: ['cookie']
         }),
         new CleanWebpackPlugin(['dist'])
     ]
